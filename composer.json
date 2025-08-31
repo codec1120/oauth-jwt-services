@@ -1,0 +1,22 @@
+{
+  "name": "oauthjwtservice/oauth-jwt-service",
+  "description": "This will validate and secure connection between services",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "oauthjwtservice\\jwt\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "illuminate/support": "^10.0",
+    "illuminate/http": "^10.0",
+    "illuminate/auth": "^10.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
