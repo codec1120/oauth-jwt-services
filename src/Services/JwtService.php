@@ -10,7 +10,7 @@ class JwtService
     */
     public static function issueToken($user)
     {
-        $privateKey = file_get_contents(storage_path('oauth-keys/oauth-private.key'));
+        $privateKey = app('oauthJWT.private_key_path');;
 
         $payload = [
             'iss' => config('app.url'),
