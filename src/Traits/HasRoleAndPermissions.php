@@ -34,7 +34,7 @@ trait HasRoleAndPermissions
      */
     public function hasPermission(string|array $permissions, bool $requireAll = false): bool
     {
-        $userRolePermissions = $this->getUserRolePermissions();
+        $userRolePermissions = config('oauthJWT.role_permission') ?? $this->getUserRolePermissions();
         $permissions = (array) $permissions;
         $rolePermissions = $userRolePermissions[$this->role] ?? [];
 

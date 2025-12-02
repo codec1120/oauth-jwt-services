@@ -11,5 +11,5 @@ return [
     'private_key_path' => env(
         'OAUTH_PRIVATE_KEY',
         storage_path('oauth-keys/oauth-private.key')
-    ),
+    )
 ];
