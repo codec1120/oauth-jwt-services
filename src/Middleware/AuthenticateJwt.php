@@ -40,7 +40,7 @@ class AuthenticateJwt
 
             $request->setUserResolver(fn () => $user);
 
-            $request->merge(['user_id' =>  $user->id, 'token' => $token]);
+            $request->merge(['user_id' =>  $user->id, 'token' => $token, 'user_role' => $user->role]);
 
         } catch (\Exception $e) {
             return response()->json([
