@@ -8,13 +8,15 @@ use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Redis;
 
 class AuthenticateJwt
 {
     public function handle($request, Closure $next)
     {
         $token = $request->bearerToken();
-        if (! $token) {
+
+        if (!$token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -30,6 +32,16 @@ class AuthenticateJwt
 
             // Load user from DB
             $user = User::find($decoded->sub);
+            $tokenSessionId = $decoded->sid ?? null;
+            $activeSessionId = Redis::get("user_session:{$userId}");
+
+            if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {
+                return response()->json([
+                    'code' => 'SESSION_CONFLICT',
+                    'message' => 'Your account was logged in on another device.'
+                ], 401);
+            }
+
 
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 401);
