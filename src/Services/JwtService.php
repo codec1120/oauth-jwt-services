@@ -2,6 +2,8 @@
 namespace OauthJwtService\Jwt\Services;
 
 use Firebase\JWT\JWT;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 
 class JwtService
 {
@@ -11,14 +13,17 @@ class JwtService
     public static function issueToken($user)
     {
         $privateKey = file_get_contents(config('oauthJWT.private_key_path'));
+        $sessionId = Str::uuid()->toString();
+        Redis::set("user_session:{$user->id}", $sessionId);
 
         $payload = [
             'iss' => config('app.url'),
             'sub' => $user->id,
+            'sid' => $sessionId,
             'email' => $user->email,
             'roles' => $user->roles ?? [],
             'iat' => time(),
-            'exp' => time() + 3600
+            'exp' => time() + 604800 // 1 week expiration
         ];
 
         return JWT::encode($payload, $privateKey, 'RS256');
