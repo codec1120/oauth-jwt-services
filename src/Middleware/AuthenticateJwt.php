@@ -29,11 +29,12 @@ class AuthenticateJwt
 
             // Decode + verify token
             $decoded = JWT::decode($token, new Key($publicKey, 'RS256'));
-
+    
             // Load user from DB
             $user = User::find($decoded->sub);
             $tokenSessionId = $decoded->sid ?? null;
-
+            $activeSessionId = Redis::get("user_session:{$user->id}");
+            
             if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {
                 return response()->json([
                     'code' => 'SESSION_CONFLICT',
