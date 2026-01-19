@@ -33,7 +33,8 @@ class AuthenticateJwt
             // Load user from DB
             $user = User::find($decoded->sub);
             $tokenSessionId = $decoded->sid ?? null;
-            $activeSessionId = Redis::get("user_session:{$user->id}");
+            $prefix = config('database.redis.options.prefix');
+            $activeSessionId = Redis::get("{$prefix}user_session:{$user->id}");
             
             if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {
                 return response()->json([
