@@ -37,6 +37,11 @@ class AuthenticateJwt
             $activeSessionId = Redis::get("{$prefix}user_session:{$user->id}");
             
             if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {
+                // Delete any existing session to prevent multiple logins
+                Redis::del("{$prefix}user_session:{$user->id}");
+                // Auto Logout
+                Auth::logout();
+                
                 return response()->json([
                     'code' => 'SESSION_CONFLICT',
                     'message' => 'Your account was logged in on another device.'

@@ -49,34 +49,8 @@ trait HasRoleAndPermissions
     public function getUserRolePermissions(): array
     {
         return [
-            UserRole::DOCTOR->value => [
-                Permissions::ALL->value
-            ],
             UserRole::SUPER_ADMIN->value => [
                 Permissions::ALL->value
-            ],
-            UserRole::PATIENT->value => [
-                Permissions::VIEW_PATIENT->value,
-                Permissions::UPDATE_PATIENT->value,
-                Permissions::VIEW_PATIENT_MEDICAL_HISTORY->value,
-                Permissions::VIEW_APPOINTMENT->value,
-                Permissions::SCHEDULE_APPOINTMENT->value,
-                Permissions::UPDATE_APPOINTMENT->value,
-                Permissions::DELETE_APPOINTMENT->value,
-                Permissions::VIEW_PROFILE->value,
-                Permissions::UPDATE_PROFILE->value,
-            ],
-            UserRole::STAFF->value => [
-                Permissions::VIEW_PATIENT->value,
-                Permissions::UPDATE_PATIENT->value,
-                Permissions::VIEW_PATIENT_MEDICAL_HISTORY->value,
-                Permissions::VIEW_APPOINTMENT->value,
-                Permissions::SCHEDULE_APPOINTMENT->value,
-                Permissions::UPDATE_APPOINTMENT->value,
-                Permissions::DELETE_APPOINTMENT->value,
-                Permissions::VIEW_PROFILE->value,
-                Permissions::UPDATE_PROFILE->value,
-                Permissions::VIEW_DASHBOARD->value,
             ],
         ];
     }
