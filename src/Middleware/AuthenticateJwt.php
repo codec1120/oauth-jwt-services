@@ -34,11 +34,12 @@ class AuthenticateJwt
             $user = User::find($decoded->sub);
             $tokenSessionId = $decoded->sid ?? null;
             $prefix = config('database.redis.options.prefix');
-            $activeSessionId = Redis::get("{$prefix}user_session:{$user->id}");
-            
+            $domain = $request->getHost();
+            $activeSessionId = Redis::get("{$prefix}user_session:{$domain}:{$user->id}");
+
             if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {
                 // Delete any existing session to prevent multiple logins
-                Redis::del("{$prefix}user_session:{$user->id}");
+                Redis::del("{$prefix}user_session:{$domain}:{$user->id}");
                 // Auto Logout
                 Auth::logout();
                 
