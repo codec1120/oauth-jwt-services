@@ -14,7 +14,9 @@ class JwtService
     {
         $privateKey = file_get_contents(config('oauthJWT.private_key_path'));
         $sessionId = Str::uuid()->toString();
-        Redis::set("user_session:{$user->id}", $sessionId);
+        $domain = request()->getHost();
+        $prefix = config('database.redis.options.prefix');
+        Redis::set("{$prefix}user_session:{$domain}:{$user->id}", $sessionId);
 
         $payload = [
             'iss' => config('app.url'),
