@@ -34,7 +34,7 @@ class AuthenticateJwt
             $user = User::find($decoded->sub);
             $tokenSessionId = $decoded->sid ?? null;
             $prefix = config('database.redis.options.prefix');
-            $domain = $request->getHost();
+            $domain = parse_url(config('app.url'), PHP_URL_HOST);
             $activeSessionId = Redis::get("{$prefix}user_session:{$domain}:{$user->id}");
 
             if (!$activeSessionId || $activeSessionId !== $tokenSessionId) {

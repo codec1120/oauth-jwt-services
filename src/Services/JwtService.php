@@ -14,7 +14,7 @@ class JwtService
     {
         $privateKey = file_get_contents(config('oauthJWT.private_key_path'));
         $sessionId = Str::uuid()->toString();
-        $domain = request()->getHost();
+        $domain = parse_url(config('app.url'), PHP_URL_HOST);
         $prefix = config('database.redis.options.prefix');
         Redis::set("{$prefix}user_session:{$domain}:{$user->id}", $sessionId);
 
